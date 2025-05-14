@@ -69,72 +69,74 @@ export default function Header() {
             </nav>
           )}
 
-          {/* Mobile Navigation Trigger */}
-          <div className="md:hidden">
-            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(true)}>
-                  <Menu className="h-6 w-6 text-foreground" />
-                  <span className="sr-only">Open menu</span>
-                </Button>
-              </SheetTrigger>
-              {/* AnimatePresence for mobile menu */}
-              <AnimatePresence>
-                {isMobileMenuOpen && (
-                  <SheetContent
-                    side="left" // Changed to left for slide-in from left
-                    className="w-full max-w-xs bg-background p-0" // Removed p-6 to allow motion.div to control padding
-                    asChild // Important for Framer Motion to take over rendering
-                  >
-                    <motion.div
-                      variants={mobileMenuVariants}
-                      initial="hidden"
-                      animate="visible"
-                      exit="hidden" // Slide out to left on close
-                      className="flex flex-col h-full p-6" // Added padding here
+          {/* Mobile Navigation Trigger - Rendered only on client after mount */}
+          {hasMounted && (
+            <div className="md:hidden">
+              <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(true)}>
+                    <Menu className="h-6 w-6 text-foreground" />
+                    <span className="sr-only">Open menu</span>
+                  </Button>
+                </SheetTrigger>
+                {/* AnimatePresence for mobile menu */}
+                <AnimatePresence>
+                  {isMobileMenuOpen && (
+                    <SheetContent
+                      side="left" // Changed to left for slide-in from left
+                      className="w-full max-w-xs bg-background p-0" // Removed p-6 to allow motion.div to control padding
+                      asChild // Important for Framer Motion to take over rendering
                     >
-                      <div className="flex justify-between items-center mb-4">
-                        <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary" onClick={() => setIsMobileMenuOpen(false)}>
-                          <Zap className="h-7 w-7" />
-                          <span>{COMPANY_NAME}</span>
-                        </Link>
-                        <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
-                          <X className="h-6 w-6 text-foreground" />
-                          <span className="sr-only">Close menu</span>
-                        </Button>
-                      </div>
-                      {NAV_LINKS.map((link) => (
-                        <Link
-                          key={link.href}
-                          href={link.href}
-                          className="text-lg font-medium text-foreground hover:text-primary transition-colors py-2"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          {link.label}
-                        </Link>
-                      ))}
-                      {hasMounted && (
-                        <Button
-                          variant="default"
-                          size="lg"
-                          className="w-full bg-accent hover:bg-accent/90 text-accent-foreground mt-auto"
-                          onClick={() => {
-                            setIsSchedulingModalOpen(true);
-                            setIsMobileMenuOpen(false);
-                          }}
-                        >
-                          Let's Connect
-                        </Button>
-                      )}
-                    </motion.div>
-                  </SheetContent>
-                )}
-              </AnimatePresence>
-            </Sheet>
-          </div>
+                      <motion.div
+                        variants={mobileMenuVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden" // Slide out to left on close
+                        className="flex flex-col h-full p-6" // Added padding here
+                      >
+                        <div className="flex justify-between items-center mb-4">
+                          <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary" onClick={() => setIsMobileMenuOpen(false)}>
+                            <Zap className="h-7 w-7" />
+                            <span>{COMPANY_NAME}</span>
+                          </Link>
+                          <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
+                            <X className="h-6 w-6 text-foreground" />
+                            <span className="sr-only">Close menu</span>
+                          </Button>
+                        </div>
+                        {NAV_LINKS.map((link) => (
+                          <Link
+                            key={link.href}
+                            href={link.href}
+                            className="text-lg font-medium text-foreground hover:text-primary transition-colors py-2"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            {link.label}
+                          </Link>
+                        ))}
+                        {hasMounted && (
+                          <Button
+                            variant="default"
+                            size="lg"
+                            className="w-full bg-accent hover:bg-accent/90 text-accent-foreground mt-auto"
+                            onClick={() => {
+                              setIsSchedulingModalOpen(true);
+                              setIsMobileMenuOpen(false);
+                            }}
+                          >
+                            Let's Connect
+                          </Button>
+                        )}
+                      </motion.div>
+                    </SheetContent>
+                  )}
+                </AnimatePresence>
+              </Sheet>
+            </div>
+          )}
         </div>
       </header>
-      <SchedulingModal isOpen={isSchedulingModalOpen} onOpenChange={setIsSchedulingModalOpen} />
+      {hasMounted && <SchedulingModal isOpen={isSchedulingModalOpen} onOpenChange={setIsSchedulingModalOpen} />}
     </>
   );
 }
