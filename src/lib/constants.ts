@@ -1,7 +1,7 @@
 export const WHATSAPP_PHONE_NUMBER = "18005551234"; // Replace with actual number e.g. +12345678900 (no +)
-export const WHATSAPP_LINK_GENERIC = `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=Hello%20VirtualAssist%20Hub!%20I'd%20like%20to%20know%20more%20about%20your%20services.`;
+export const WHATSAPP_LINK_GENERIC = `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=Hello%20SupportDeskllp!%20I'd%20like%20to%20know%20more%20about%20your%20services.`;
 
-export const COMPANY_NAME = "VirtualAssist Hub";
+export const COMPANY_NAME = "SupportDeskllp";
 
 export const NAV_LINKS = [
   { href: "/", label: "Home" },

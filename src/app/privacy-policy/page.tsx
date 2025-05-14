@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { COMPANY_NAME } from "@/lib/constants";
 
 export default function PrivacyPolicyPage() {
   return (
@@ -11,7 +12,7 @@ export default function PrivacyPolicyPage() {
           <p>Last updated: {new Date().toLocaleDateString()}</p>
           
           <h2 className="text-xl font-semibold text-foreground">1. Introduction</h2>
-          <p>Welcome to VirtualAssist Hub. We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy, or our practices with regards to your personal information, please contact us.</p>
+          <p>Welcome to {COMPANY_NAME}. We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy, or our practices with regards to your personal information, please contact us.</p>
 
           <h2 className="text-xl font-semibold text-foreground">2. Information We Collect</h2>
           <p>We collect personal information that you voluntarily provide to us when you express an interest in obtaining information about us or our products and services, when you participate in activities on the Website or otherwise when you contact us.</p>
@@ -42,9 +43,9 @@ export default function PrivacyPolicyPage() {
           <p>Yes, we will update this policy as necessary to stay compliant with relevant laws.</p>
 
           <h2 className="text-xl font-semibold text-foreground">11. How Can You Contact Us About This Policy?</h2>
-          <p>If you have questions or comments about this policy, you may email us at privacy@virtualassisthub.com or by post to:</p>
+          <p>If you have questions or comments about this policy, you may email us at privacy@supportdeskllp.com or by post to:</p>
           <p>
-            VirtualAssist Hub<br />
+            {COMPANY_NAME}<br />
             Attn: Privacy Officer<br />
             123 Innovation Drive<br />
             Tech City, TX 75001, USA

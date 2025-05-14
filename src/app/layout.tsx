@@ -6,7 +6,7 @@ import AppLayout from '@/components/layout/AppLayout';
 import { Providers } from './providers'; // Assuming providers.tsx is in app directory
 
 export const metadata: Metadata = {
-  title: 'VirtualAssist Hub',
+  title: 'SupportDeskllp',
   description: 'Virtual Assistants for Startups and Enterprises',
 };
 

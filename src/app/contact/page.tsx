@@ -34,7 +34,7 @@ export default function ContactPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Send your inquiries to: <a href="mailto:support@virtualassisthub.com" className="text-accent hover:underline">support@virtualassisthub.com</a>
+                  Send your inquiries to: <a href="mailto:support@supportdeskllp.com" className="text-accent hover:underline">support@supportdeskllp.com</a>
                 </p>
                  <p className="text-sm text-muted-foreground mt-1">We aim to respond within one business day.</p>
               </CardContent>

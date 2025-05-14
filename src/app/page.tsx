@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import SchedulingModal from "@/components/ui/SchedulingModal";
 import LogoCarousel from "@/components/ui/LogoCarousel";
 import { ArrowRight, CalendarDays, Zap, Settings, LineChart, CheckCircle } from "lucide-react"; // Updated icons
+import { COMPANY_NAME } from "@/lib/constants";
 
 export default function HomePage() {
   const [isSchedulingModalOpen, setIsSchedulingModalOpen] = useState(false);
@@ -43,7 +44,7 @@ export default function HomePage() {
       {/* How It Works / Benefits Section */}
       <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl font-bold text-center text-foreground mb-12">Why Choose VirtualAssist Hub?</h2>
+          <h2 className="text-3xl font-bold text-center text-foreground mb-12">Why Choose {COMPANY_NAME}?</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="text-center hover:shadow-xl transition-shadow duration-300">
               <CardHeader>
