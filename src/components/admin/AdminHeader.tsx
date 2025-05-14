@@ -8,11 +8,11 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, LogOut, Zap } from "lucide-react";
 import { COMPANY_NAME } from "@/lib/constants";
 import AdminSidebarNav from "./AdminSidebarNav";
-import { useState } from "react"; // Import useState
+import { useState } from "react"; 
 
 export default function AdminHeader() {
   const router = useRouter();
-  const [isMobileAdminMenuOpen, setIsMobileAdminMenuOpen] = useState(false); // State for admin mobile menu
+  const [isMobileAdminMenuOpen, setIsMobileAdminMenuOpen] = useState(false); 
 
   const handleLogout = async () => {
     await fetch('/api/admin/auth/logout', { method: 'POST' });
@@ -33,7 +33,7 @@ export default function AdminHeader() {
           <nav className="grid gap-6 text-lg font-medium">
             <Link
               href="/admin/dashboard"
-              onClick={() => setIsMobileAdminMenuOpen(false)} // Close on link click
+              onClick={() => setIsMobileAdminMenuOpen(false)} 
               className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
             >
               <Zap className="h-5 w-5 transition-all group-hover:scale-110" />
@@ -50,7 +50,7 @@ export default function AdminHeader() {
 
       <Button onClick={handleLogout} variant="outline" size="sm">
         <LogOut className="mr-2 h-4 w-4" />
-        Logout
+        <span>Logout</span>
       </Button>
     </header>
   );

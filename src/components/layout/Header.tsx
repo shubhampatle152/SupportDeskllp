@@ -61,7 +61,7 @@ export default function Header() {
               className="bg-accent hover:bg-accent/90 text-accent-foreground transition-transform hover:scale-105"
               onClick={() => setIsSchedulingModalOpen(true)}
             >
-              Let's Connect
+              <span>Let's Connect</span>
             </Button>
           </nav>
 
@@ -118,7 +118,7 @@ export default function Header() {
                           setIsMobileMenuOpen(false);
                         }}
                       >
-                        Let's Connect
+                        <span>Let's Connect</span>
                       </Button>
                     </motion.div>
                   </SheetContent>

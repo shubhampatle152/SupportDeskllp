@@ -87,7 +87,7 @@ export default function LoginForm() {
         </CardContent>
         <CardFooter>
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Login"}
+            {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <span>Login</span>}
           </Button>
         </CardFooter>
       </form>
