@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { Menu, X, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet"; // SheetClose might not be needed if AnimatePresence handles exit
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { NAV_LINKS, COMPANY_NAME } from "@/lib/constants";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
@@ -61,7 +61,7 @@ export default function Header() {
               className="bg-accent hover:bg-accent/90 text-accent-foreground transition-transform hover:scale-105"
               onClick={() => setIsSchedulingModalOpen(true)}
             >
-              <span>Let's Connect</span>
+              Let's Connect
             </Button>
           </nav>
 
@@ -118,7 +118,7 @@ export default function Header() {
                           setIsMobileMenuOpen(false);
                         }}
                       >
-                        <span>Let's Connect</span>
+                        Let's Connect
                       </Button>
                     </motion.div>
                   </SheetContent>
