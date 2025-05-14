@@ -3,15 +3,30 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { PlusCircle, Edit, Trash2 } from "lucide-react";
+import { PlusCircle, Edit, Trash2, HelpCircle } from "lucide-react";
 import Link from "next/link";
+import * as LucideIcons from "lucide-react";
+import type { LucideProps } from "lucide-react";
 
 // Placeholder data - replace with API call
 const mockServices = [
   { id: "1", title: "Back-Office Support", description: "Efficient handling of your administrative tasks.", iconName: "Briefcase", status: "Active" },
   { id: "2", title: "Digital Marketing", description: "Boost your online presence and reach.", iconName: "Megaphone", status: "Active" },
   { id: "3", title: "Web Development", description: "Custom websites and web applications.", iconName: "Codepen", status: "Draft" },
+  { id: "4", title: "NonExistentIconTest", description: "Test with an icon that doesn't exist.", iconName: "NonExistentIcon", status: "Draft" },
 ];
+
+type IconName = keyof typeof LucideIcons;
+
+const getIcon = (name: string | undefined, props?: LucideProps) => {
+  if (!name) return <HelpCircle {...props} className="h-5 w-5 text-muted-foreground" />;
+  const IconComponent = LucideIcons[name as IconName] as React.ComponentType<LucideProps>;
+  if (!IconComponent) {
+    // Fallback for invalid icon names
+    return <HelpCircle {...props} className="h-5 w-5 text-muted-foreground" />;
+  }
+  return <IconComponent {...props} className="h-5 w-5" />;
+};
 
 export default function AdminServicesPage() {
   // In a real app, you'd fetch services from your API here
@@ -42,9 +57,9 @@ export default function AdminServicesPage() {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="hidden sm:table-cell w-[60px]">Icon</TableHead>
                 <TableHead>Title</TableHead>
                 <TableHead className="hidden md:table-cell">Description</TableHead>
-                <TableHead className="hidden sm:table-cell">Icon</TableHead>
                 <TableHead className="hidden sm:table-cell">Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
@@ -59,9 +74,11 @@ export default function AdminServicesPage() {
               )}
               {services.map((service) => (
                 <TableRow key={service.id}>
+                  <TableCell className="hidden sm:table-cell">
+                    {getIcon(service.iconName)}
+                  </TableCell>
                   <TableCell className="font-medium">{service.title}</TableCell>
                   <TableCell className="hidden md:table-cell max-w-xs truncate">{service.description}</TableCell>
-                  <TableCell className="hidden sm:table-cell">{service.iconName}</TableCell>
                   <TableCell className="hidden sm:table-cell">
                     <Badge variant={service.status === "Active" ? "default" : "secondary"}>
                       {service.status}
@@ -74,8 +91,7 @@ export default function AdminServicesPage() {
                         <span className="sr-only">Edit</span>
                       </Link>
                     </Button>
-                    <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
-                      {/* Add onClick handler for delete action */}
+                    <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => alert(`Delete action for ${service.title} not implemented yet.`)}>
                       <Trash2 className="h-4 w-4" />
                       <span className="sr-only">Delete</span>
                     </Button>
@@ -93,7 +109,7 @@ export default function AdminServicesPage() {
         <CardContent>
             <p className="text-sm text-muted-foreground">
             This page uses placeholder data. Functionality for adding, editing, and deleting services
-            needs to be connected to backend API routes. Icons are currently shown as names; you'll need to map these to actual Lucide icon components.
+            needs to be connected to backend API routes. Delete buttons currently show an alert.
             </p>
         </CardContent>
       </Card>
