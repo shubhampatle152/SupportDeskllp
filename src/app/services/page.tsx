@@ -1,4 +1,4 @@
-
+// src/app/services/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -10,8 +10,21 @@ import { SERVICES_DATA } from "@/lib/constants";
 import { CalendarDays } from "lucide-react";
 import type { LucideProps } from "lucide-react";
 import * as LucideIcons from "lucide-react";
+import { motion } from "framer-motion";
 
 type IconName = keyof typeof LucideIcons;
+
+// Container for service cards for staggered animation
+// Stagger children by 0.15s
+const servicesContainerVariants = {
+  hidden: { opacity: 1 }, // Parent doesn't need to fade, only stagger children
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15, // Duration for staggering
+    },
+  },
+};
 
 export default function ServicesPage() {
   const [isSchedulingModalOpen, setIsSchedulingModalOpen] = useState(false);
@@ -21,28 +34,35 @@ export default function ServicesPage() {
       <section className="py-16 md:py-24 bg-gradient-to-br from-primary/5 via-background to-background">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12 md:mb-16">
+            {/* Using existing CSS animations for titles for now, can be replaced with Framer Motion */}
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 animate-fadeInUp opacity-0">Our Comprehensive Services</h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto animate-fadeInUp opacity-0 animation-delay-200">
               We offer a wide range of virtual assistance services designed to streamline your operations, boost productivity, and help your business grow.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {SERVICES_DATA.map((service, index) => (
-              <div key={service.id} className={`animate-fadeInUp opacity-0 animation-delay-${(index + 1) * 100}`}>
-                <ServiceCard
-                  id={service.id}
-                  title={service.title}
-                  description={service.description}
-                  iconName={service.icon as IconName} // Cast service.icon to IconName
-                />
-              </div>
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+            variants={servicesContainerVariants}
+            initial="hidden"
+            animate="visible" // Animate when the component mounts (or whileInView if preferred for the whole grid)
+          >
+            {SERVICES_DATA.map((service) => (
+              // ServiceCard now has its own motion.div, so no need to wrap it here with another one
+              // The staggerChildren in the parent will apply to the motion.div inside ServiceCard
+              <ServiceCard
+                key={service.id}
+                id={service.id}
+                title={service.title}
+                description={service.description}
+                iconName={service.icon as IconName}
+              />
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Schedule a Call Section */}
+      {/* Schedule a Call Section - using existing CSS animations */}
       <section className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4 md:px-6">
            <Card className="max-w-3xl mx-auto shadow-xl bg-card p-6 md:p-10 animate-fadeInUp opacity-0">

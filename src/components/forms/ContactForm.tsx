@@ -1,6 +1,7 @@
+// src/components/forms/ContactForm.tsx
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,8 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import ConfettiBurst from "@/components/ui/ConfettiBurst"; // Import Confetti
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -20,9 +23,21 @@ const contactFormSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
+// Shake animation variants for invalid submit
+// Duration: 0.1s for each part of shake, total 0.4s
+const shakeVariants = {
+  shake: {
+    x: [0, -10, 10, -10, 10, 0], // Shake horizontally
+    transition: { duration: 0.4, ease: "easeInOut" }, // Duration 0.4s
+  },
+  initial: { x: 0 }
+};
+
 export default function ContactForm() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [animateForm, setAnimateForm] = useState(false); // For shake animation trigger
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -34,8 +49,9 @@ export default function ContactForm() {
     },
   });
 
-  async function onSubmit(data: ContactFormValues) {
+  const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
     setIsLoading(true);
+    setAnimateForm(false); // Reset shake
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
 
@@ -44,13 +60,24 @@ export default function ContactForm() {
       title: "Message Sent!",
       description: "Thank you for reaching out. We'll get back to you soon.",
     });
+    setShowConfetti(true); // Trigger confetti
     form.reset();
     setIsLoading(false);
-  }
+  };
+
+  const onInvalidSubmit = () => {
+    setAnimateForm(true); // Trigger shake animation
+    setTimeout(() => setAnimateForm(false), 500); // Reset shake after animation
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <motion.form
+        onSubmit={form.handleSubmit(onSubmit, onInvalidSubmit)}
+        className="space-y-6"
+        variants={shakeVariants}
+        animate={animateForm ? "shake" : "initial"} // Control shake animation
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
@@ -118,7 +145,8 @@ export default function ContactForm() {
             "Send Message"
           )}
         </Button>
-      </form>
+      </motion.form>
+      <ConfettiBurst isActive={showConfetti} onAnimationComplete={() => setShowConfetti(false)} />
     </Form>
   );
 }
