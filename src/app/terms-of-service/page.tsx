@@ -1,15 +1,25 @@
+
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { COMPANY_NAME } from "@/lib/constants";
+import { useState, useEffect } from "react";
 
 export default function TermsOfServicePage() {
+  const [lastUpdated, setLastUpdated] = useState("");
+
+  useEffect(() => {
+    setLastUpdated(new Date().toLocaleDateString());
+  }, []);
+
   return (
     <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
-      <Card className="max-w-3xl mx-auto bg-card shadow-lg">
+      <Card className="max-w-3xl mx-auto bg-card shadow-lg animate-fadeInUp opacity-0">
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-primary">Terms of Service</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6 text-muted-foreground">
-          <p>Last updated: {new Date().toLocaleDateString()}</p>
+          <p>Last updated: {lastUpdated || "Loading..."}</p>
 
           <h2 className="text-xl font-semibold text-foreground">1. Agreement to Terms</h2>
           <p>By using our services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services. We may update these terms from time to time, and your continued use of our services constitutes acceptance of those changes.</p>

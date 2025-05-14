@@ -1,15 +1,25 @@
+
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { COMPANY_NAME } from "@/lib/constants";
+import { useState, useEffect } from "react";
 
 export default function PrivacyPolicyPage() {
+  const [lastUpdated, setLastUpdated] = useState("");
+
+  useEffect(() => {
+    setLastUpdated(new Date().toLocaleDateString());
+  }, []);
+
   return (
     <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
-      <Card className="max-w-3xl mx-auto bg-card shadow-lg">
+      <Card className="max-w-3xl mx-auto bg-card shadow-lg animate-fadeInUp opacity-0">
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-primary">Privacy Policy</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6 text-muted-foreground">
-          <p>Last updated: {new Date().toLocaleDateString()}</p>
+          <p>Last updated: {lastUpdated || "Loading..."}</p>
           
           <h2 className="text-xl font-semibold text-foreground">1. Introduction</h2>
           <p>Welcome to {COMPANY_NAME}. We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy, or our practices with regards to your personal information, please contact us.</p>
