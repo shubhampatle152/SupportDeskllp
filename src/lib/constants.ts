@@ -38,3 +38,4 @@ export const LOGO_CLIENTS = [
   { id: "4", name: "Client Delta", logoUrl: "https://placehold.co/150x60.png?text=DeltaCo", "data-ai-hint": "minimalist logo" },
   { id: "5", name: "Client Epsilon", logoUrl: "https://placehold.co/150x60.png?text=Epsilon", "data-ai-hint": "classic logo" },
 ];
+
