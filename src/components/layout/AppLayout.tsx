@@ -7,7 +7,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow animate-fadeIn opacity-0">{children}</main>
       <Footer />
       <WhatsappIcon />
     </div>
