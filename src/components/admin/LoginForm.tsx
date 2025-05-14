@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,8 +14,13 @@ export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,39 +63,53 @@ export default function LoginForm() {
         <CardTitle className="text-2xl">Admin Login</CardTitle>
         <CardDescription>Enter your credentials to access the admin panel.</CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
+      {hasMounted ? (
+        <form onSubmit={handleSubmit}>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="admin@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={isLoading}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={isLoading}
+                placeholder="********"
+              />
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <span>Login</span>}
+            </Button>
+          </CardFooter>
+        </form>
+      ) : (
+        // Optional: Render a placeholder or skeleton while not mounted
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="admin@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              disabled={isLoading}
-            />
+            <div className="h-5 w-20 bg-muted rounded-md animate-pulse"></div>
+            <div className="h-10 w-full bg-muted rounded-md animate-pulse"></div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              disabled={isLoading}
-              placeholder="********"
-            />
+            <div className="h-5 w-20 bg-muted rounded-md animate-pulse"></div>
+            <div className="h-10 w-full bg-muted rounded-md animate-pulse"></div>
           </div>
         </CardContent>
-        <CardFooter>
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <span>Login</span>}
-          </Button>
-        </CardFooter>
-      </form>
+      )}
     </Card>
   );
 }
