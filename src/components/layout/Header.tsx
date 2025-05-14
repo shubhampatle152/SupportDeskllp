@@ -47,18 +47,18 @@ export default function Header() {
             <span>{COMPANY_NAME}</span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden items-center gap-6 md:flex">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-foreground hover:text-primary transition-colors font-medium"
-              >
-                {link.label}
-              </Link>
-            ))}
-            {hasMounted && (
+          {/* Desktop Navigation - Rendered only on client after mount */}
+          {hasMounted && (
+            <nav className="hidden items-center gap-6 md:flex">
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-foreground hover:text-primary transition-colors font-medium"
+                >
+                  {link.label}
+                </Link>
+              ))}
               <Button
                 variant="default"
                 className="bg-accent hover:bg-accent/90 text-accent-foreground transition-transform hover:scale-105"
@@ -66,8 +66,8 @@ export default function Header() {
               >
                 Let's Connect
               </Button>
-            )}
-          </nav>
+            </nav>
+          )}
 
           {/* Mobile Navigation Trigger */}
           <div className="md:hidden">
