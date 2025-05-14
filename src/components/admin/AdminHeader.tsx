@@ -7,10 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, LogOut, Zap } from "lucide-react";
 import { COMPANY_NAME } from "@/lib/constants";
-import AdminSidebarNav from "./AdminSidebarNav"; // We'll create this next
+import AdminSidebarNav from "./AdminSidebarNav";
+import { useState } from "react"; // Import useState
 
 export default function AdminHeader() {
   const router = useRouter();
+  const [isMobileAdminMenuOpen, setIsMobileAdminMenuOpen] = useState(false); // State for admin mobile menu
 
   const handleLogout = async () => {
     await fetch('/api/admin/auth/logout', { method: 'POST' });
@@ -20,9 +22,9 @@ export default function AdminHeader() {
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 py-4">
-      <Sheet>
+      <Sheet open={isMobileAdminMenuOpen} onOpenChange={setIsMobileAdminMenuOpen}>
         <SheetTrigger asChild>
-          <Button size="icon" variant="outline" className="sm:hidden">
+          <Button size="icon" variant="outline" className="sm:hidden" onClick={() => setIsMobileAdminMenuOpen(true)}>
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle Menu</span>
           </Button>
@@ -31,16 +33,13 @@ export default function AdminHeader() {
           <nav className="grid gap-6 text-lg font-medium">
             <Link
               href="/admin/dashboard"
+              onClick={() => setIsMobileAdminMenuOpen(false)} // Close on link click
               className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
             >
               <Zap className="h-5 w-5 transition-all group-hover:scale-110" />
               <span className="sr-only">{COMPANY_NAME} Admin</span>
             </Link>
-            <AdminSidebarNav onLinkClick={() => {
-              // Close sheet on mobile after navigation
-              const trigger = document.querySelector('button[aria-label="Toggle Menu"]');
-              if (trigger instanceof HTMLElement) trigger.click();
-            }} />
+            <AdminSidebarNav onLinkClick={() => setIsMobileAdminMenuOpen(false)} />
           </nav>
         </SheetContent>
       </Sheet>
