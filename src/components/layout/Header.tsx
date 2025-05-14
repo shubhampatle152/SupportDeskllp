@@ -15,8 +15,10 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSchedulingModalOpen, setIsSchedulingModalOpen] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
+    setHasMounted(true);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
@@ -56,13 +58,15 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            <Button
-              variant="default"
-              className="bg-accent hover:bg-accent/90 text-accent-foreground transition-transform hover:scale-105"
-              onClick={() => setIsSchedulingModalOpen(true)}
-            >
-              Let's Connect
-            </Button>
+            {hasMounted && (
+              <Button
+                variant="default"
+                className="bg-accent hover:bg-accent/90 text-accent-foreground transition-transform hover:scale-105"
+                onClick={() => setIsSchedulingModalOpen(true)}
+              >
+                Let's Connect
+              </Button>
+            )}
           </nav>
 
           {/* Mobile Navigation Trigger */}
@@ -109,17 +113,19 @@ export default function Header() {
                           {link.label}
                         </Link>
                       ))}
-                      <Button
-                        variant="default"
-                        size="lg"
-                        className="w-full bg-accent hover:bg-accent/90 text-accent-foreground mt-auto"
-                        onClick={() => {
-                          setIsSchedulingModalOpen(true);
-                          setIsMobileMenuOpen(false);
-                        }}
-                      >
-                        Let's Connect
-                      </Button>
+                      {hasMounted && (
+                        <Button
+                          variant="default"
+                          size="lg"
+                          className="w-full bg-accent hover:bg-accent/90 text-accent-foreground mt-auto"
+                          onClick={() => {
+                            setIsSchedulingModalOpen(true);
+                            setIsMobileMenuOpen(false);
+                          }}
+                        >
+                          Let's Connect
+                        </Button>
+                      )}
                     </motion.div>
                   </SheetContent>
                 )}
