@@ -1,3 +1,4 @@
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -64,12 +65,12 @@ export default function AdminScheduledCallsPage() {
                   </TableCell>
                   <TableCell className="text-right">
                     {call.status === "Pending" && (
-                      <Button variant="outline" size="sm" className="mr-2 border-green-500 text-green-600 hover:bg-green-50 hover:text-green-700">
+                      <Button variant="outline" size="sm" className="mr-2 border-green-500 text-green-600 hover:bg-green-50 hover:text-green-700" onClick={() => alert(`Confirming call for ${call.name} - not implemented.`)}>
                         {/* Add onClick handler for confirm action */}
                         <CheckCircle className="mr-1 h-4 w-4" /> Confirm
                       </Button>
                     )}
-                     <Button variant="outline" size="sm" className="text-destructive hover:text-destructive-foreground hover:bg-destructive/90">
+                     <Button variant="outline" size="sm" className="text-destructive hover:text-destructive-foreground hover:bg-destructive/90" onClick={() => alert(`Canceling call for ${call.name} - not implemented.`)}>
                       {/* Add onClick handler for cancel/delete action */}
                       <XCircle className="mr-1 h-4 w-4" /> Cancel
                     </Button>

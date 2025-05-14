@@ -1,3 +1,4 @@
+"use client";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,7 @@ export default function AdminContactDetailsPage() {
   // In a real app, these would be fetched and updated via an API
   const mockContactData = {
     companyName: COMPANY_NAME,
-    email: `support@${COMPANY_NAME.toLowerCase()}.com`,
+    email: `support@${COMPANY_NAME.toLowerCase().replace(/\s+/g, '')}.com`, // Ensure no spaces in domain
     phone: "+1 (800) 555-1234", // From contact page
     whatsappNumber: WHATSAPP_PHONE_NUMBER,
     addressLine1: "123 Innovation Drive",

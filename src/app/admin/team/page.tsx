@@ -1,3 +1,4 @@
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -69,7 +70,7 @@ export default function AdminTeamPage() {
                         <span className="sr-only">Edit</span>
                       </Link>
                     </Button>
-                    <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
+                    <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => alert(`Delete action for ${member.name} - not implemented.`)}>
                       {/* Add onClick handler for delete action */}
                       <Trash2 className="h-4 w-4" />
                       <span className="sr-only">Delete</span>
