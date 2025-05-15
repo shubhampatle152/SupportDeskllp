@@ -1,15 +1,3 @@
-import { cn } from "@/lib/utils"
-
-function Skeleton({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div
-      className={cn("animate-pulse rounded-md bg-muted", className)}
-      {...props}
-    />
-  )
-}
-
-export { Skeleton }
+// This file is superseded by skeleton.jsx
+// Please remove this .tsx file.
+export * from "./skeleton.jsx";

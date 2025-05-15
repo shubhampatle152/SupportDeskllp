@@ -2,7 +2,7 @@ import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import './globals.css';
 import AppLayout from '@/components/layout/AppLayout';
-import { Providers } from './providers'; // Assuming providers.js is in app directory
+import { Providers } from './providers';
 
 export const metadata = {
   title: 'SupportDeskllp',

@@ -1,27 +1,4 @@
-"use client";
-
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import ScheduleCallForm from "@/components/forms/ScheduleCallForm";
-
-
-export default function SchedulingModal({ isOpen, onOpenChange }) {
-  const handleFormSubmit = () => {
-    onOpenChange(false); // Close modal after form submission
-  };
-  
-  return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg bg-card text-card-foreground rounded-lg shadow-xl p-6">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-semibold text-primary">Schedule a Discovery Call</DialogTitle>
-          <DialogDescription className="mt-1">
-            Tell us a bit about your needs and pick a time that works for you. We're excited to connect!
-          </DialogDescription>
-        </DialogHeader>
-        <div className="mt-6">
-          <ScheduleCallForm onFormSubmit={handleFormSubmit} />
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-}
+// This file is superseded by ServiceCard.jsx
+// Please remove this .tsx file.
+import ServiceCardJSX from "./ServiceCard.jsx";
+export default ServiceCardJSX;

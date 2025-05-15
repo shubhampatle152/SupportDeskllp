@@ -1,5 +1,9 @@
-// This file is superseded by Header.jsx
-// Please remove this .tsx file.
-export default function HeaderSuperseded() {
-  return null;
+// This file now explicitly re-exports from the .jsx version
+// to ensure the correct Header component is used.
+// Ideally, this .tsx file should be deleted if your project is fully JavaScript.
+
+import HeaderJsx from './Header.jsx';
+
+export default function Header(props) {
+  return <HeaderJsx {...props} />;
 }
