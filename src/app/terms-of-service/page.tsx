@@ -1,5 +1,4 @@
 // This file is superseded by page.jsx
 // Please remove this .tsx file.
-export default function TermsOfServicePageSuperseded() {
-  return null;
-}
+import TermsOfServicePage from './page.jsx';
+export default TermsOfServicePage;

@@ -1,2 +1,4 @@
-// This file has been removed as it was a redundant TypeScript leftover.
-// The JavaScript version is at src/ai/flows/whatsapp-message-assistance.js
+// This file is superseded by whatsapp-message-assistance.js
+// Please remove this .ts file.
+// Re-export if necessary or ensure .js version is used.
+module.exports = require("./whatsapp-message-assistance.js");

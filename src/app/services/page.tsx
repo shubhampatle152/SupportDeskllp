@@ -1,7 +1,4 @@
-// This file explicitly re-exports the component from page.jsx
-// to ensure the correct JavaScript version is used by Next.js.
-// For a pure JavaScript project, this .tsx file should ideally be deleted.
-
+// This file is superseded by page.jsx
+// Please remove this .tsx file.
 import ServicesPage from './page.jsx';
-
 export default ServicesPage;

@@ -1,9 +1,6 @@
-// This file now explicitly re-exports from the .jsx version
-// to ensure the correct Header component is used.
-// Ideally, this .tsx file should be deleted if your project is fully JavaScript.
-
+// This file is superseded by Header.jsx
+// Please remove this .tsx file.
 import HeaderJsx from './Header.jsx';
-
 export default function Header(props) {
   return <HeaderJsx {...props} />;
 }

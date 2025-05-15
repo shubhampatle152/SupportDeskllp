@@ -2,4 +2,3 @@
 // Please remove this .tsx file.
 import AdminContactDetailsPageJSX from "./page.jsx";
 export default AdminContactDetailsPageJSX;
-
