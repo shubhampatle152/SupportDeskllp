@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -32,10 +33,28 @@ export default function AdminServicesPage() {
       try {
         const response = await fetch("/api/admin/services");
         if (!response.ok) {
-          throw new Error('Failed to fetch services');
+          // Try to parse error message if response is not ok
+          let errorMsg = 'Failed to fetch services';
+          try {
+            const errorData = await response.json();
+            errorMsg = errorData.message || errorMsg;
+          } catch (e) {
+            // Ignore if error response is not JSON
+          }
+          throw new Error(errorMsg);
         }
         const data = await response.json();
-        setServices(data);
+        if (Array.isArray(data)) {
+          setServices(data);
+        } else {
+          console.error("Received non-array data from services API:", data);
+          toast({
+            title: "Error Loading Services",
+            description: "Received unexpected data format from the server.",
+            variant: "destructive",
+          });
+          setServices([]); // Default to empty array to prevent .map errors
+        }
       } catch (error) {
         console.error("Error fetching services:", error);
         toast({
@@ -43,6 +62,7 @@ export default function AdminServicesPage() {
           description: "Could not fetch services. " + error.message,
           variant: "destructive",
         });
+        setServices([]); // Also default to empty array on catch
       } finally {
         setIsLoading(false);
       }
