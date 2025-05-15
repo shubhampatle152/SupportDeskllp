@@ -2,18 +2,23 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import Service from '@/models/Service';
+import mongoose from 'mongoose';
 
 // IMPORTANT: Add authentication/authorization checks for all admin routes
 
+// Helper function to validate MongoDB ObjectId
+const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
+
 export async function GET(request, { params }) {
   // TODO: Add authentication check
-  await dbConnect();
   const { serviceId } = params;
 
+  if (!isValidObjectId(serviceId)) {
+    return NextResponse.json({ message: "Invalid service ID format" }, { status: 400 });
+  }
+
   try {
-    if (!serviceId.match(/^[0-9a-fA-F]{24}$/)) {
-      return NextResponse.json({ message: "Invalid service ID format" }, { status: 400 });
-    }
+    await dbConnect();
     const service = await Service.findById(serviceId);
     if (!service) {
       return NextResponse.json({ message: "Service not found" }, { status: 404 });
@@ -21,19 +26,20 @@ export async function GET(request, { params }) {
     return NextResponse.json(service);
   } catch (error) {
     console.error(`Error fetching service ${serviceId}:`, error);
-    return NextResponse.json({ message: "Error fetching service", error: error.message }, { status: 500 });
+    return NextResponse.json({ message: "Error fetching service", details: error.message }, { status: 500 });
   }
 }
 
 export async function PUT(request, { params }) {
   // TODO: Add authentication check
-  await dbConnect();
   const { serviceId } = params;
+
+  if (!isValidObjectId(serviceId)) {
+    return NextResponse.json({ message: "Invalid service ID format" }, { status: 400 });
+  }
   
   try {
-    if (!serviceId.match(/^[0-9a-fA-F]{24}$/)) {
-      return NextResponse.json({ message: "Invalid service ID format" }, { status: 400 });
-    }
+    await dbConnect();
     const body = await request.json();
     const { title, description, iconName, status } = body;
 
@@ -56,19 +62,20 @@ export async function PUT(request, { params }) {
     if (error.name === 'ValidationError') {
       return NextResponse.json({ message: "Validation Error", errors: error.errors }, { status: 400 });
     }
-    return NextResponse.json({ message: "Error updating service", error: error.message }, { status: 500 });
+    return NextResponse.json({ message: "Error updating service", details: error.message }, { status: 500 });
   }
 }
 
 export async function DELETE(request, { params }) {
   // TODO: Add authentication check
-  await dbConnect();
   const { serviceId } = params;
 
+  if (!isValidObjectId(serviceId)) {
+    return NextResponse.json({ message: "Invalid service ID format" }, { status: 400 });
+  }
+
   try {
-    if (!serviceId.match(/^[0-9a-fA-F]{24}$/)) {
-      return NextResponse.json({ message: "Invalid service ID format" }, { status: 400 });
-    }
+    await dbConnect();
     const deletedService = await Service.findByIdAndDelete(serviceId);
 
     if (!deletedService) {
@@ -77,6 +84,6 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ message: "Service deleted successfully" });
   } catch (error) {
     console.error(`Error deleting service ${serviceId}:`, error);
-    return NextResponse.json({ message: "Error deleting service", error: error.message }, { status: 500 });
+    return NextResponse.json({ message: "Error deleting service", details: error.message }, { status: 500 });
   }
 }

@@ -7,20 +7,20 @@ import Service from '@/models/Service';
 
 export async function GET(request) {
   // TODO: Add authentication check
-  await dbConnect();
   try {
+    await dbConnect();
     const services = await Service.find({});
     return NextResponse.json(services);
   } catch (error) {
     console.error("Error fetching services:", error);
-    return NextResponse.json({ message: "Error fetching services", error: error.message }, { status: 500 });
+    return NextResponse.json({ message: "Error fetching services", details: error.message }, { status: 500 });
   }
 }
 
 export async function POST(request) {
   // TODO: Add authentication check
-  await dbConnect();
   try {
+    await dbConnect();
     const body = await request.json();
     const { title, description, iconName, status } = body;
 
@@ -41,6 +41,6 @@ export async function POST(request) {
     if (error.name === 'ValidationError') {
       return NextResponse.json({ message: "Validation Error", errors: error.errors }, { status: 400 });
     }
-    return NextResponse.json({ message: "Error creating service", error: error.message }, { status: 500 });
+    return NextResponse.json({ message: "Error creating service", details: error.message }, { status: 500 });
   }
 }
