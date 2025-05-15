@@ -1,31 +1,36 @@
-"use client";
+import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { LOGO_CLIENTS } from "@/lib/constants";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import ScheduleCallForm from "@/components/forms/ScheduleCallForm";
-
-interface SchedulingModalProps {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-}
-
-export default function SchedulingModal({ isOpen, onOpenChange }: SchedulingModalProps) {
-  const handleFormSubmit = () => {
-    onOpenChange(false); // Close modal after form submission
-  };
-  
+export default function LogoCarousel() {
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg bg-card text-card-foreground rounded-lg shadow-xl p-6">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-semibold text-primary">Schedule a Discovery Call</DialogTitle>
-          <DialogDescription className="mt-1">
-            Tell us a bit about your needs and pick a time that works for you. We're excited to connect!
-          </DialogDescription>
-        </DialogHeader>
-        <div className="mt-6">
-          <ScheduleCallForm onFormSubmit={handleFormSubmit} />
-        </div>
-      </DialogContent>
-    </Dialog>
+    <section className="py-12 bg-secondary">
+      <div className="container mx-auto px-4 md:px-6">
+        <h2 className="text-3xl font-bold text-center text-secondary-foreground mb-2">Trusted by Businesses Like Yours</h2>
+        <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
+          We're proud to partner with innovative startups and established enterprises to help them achieve their goals.
+        </p>
+        <ScrollArea className="w-full whitespace-nowrap rounded-md">
+          <div className="flex w-max space-x-6 p-4">
+            {LOGO_CLIENTS.map((client) => (
+              <Card key={client.id} className="overflow-hidden shrink-0 w-[180px] h-[90px] flex items-center justify-center hover:shadow-lg transition-shadow duration-300 bg-card">
+                <CardContent className="p-0">
+                  <Image
+                    src={client.logoUrl}
+                    alt={client.name}
+                    width={150}
+                    height={60}
+                    className="object-contain"
+                    data-ai-hint={client['data-ai-hint']}
+                  />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+      </div>
+    </section>
   );
 }

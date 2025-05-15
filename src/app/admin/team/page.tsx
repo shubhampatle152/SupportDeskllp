@@ -1,77 +1,149 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { PlusCircle, Edit, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { PlusCircle, Edit, Trash2, HelpCircle, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { TEAM_MEMBERS } from "@/lib/constants"; // Using existing constants for mock
+import * as LucideIcons from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
-export default function AdminTeamPage() {
-  // Using TEAM_MEMBERS from constants as mock data
-  const teamMembers = TEAM_MEMBERS;
+
+const getIcon = (name, props) => {
+  if (!name) return <HelpCircle {...props} className="h-5 w-5 text-muted-foreground" />;
+  const IconComponent = LucideIcons[name];
+  if (!IconComponent) {
+    // Fallback for invalid icon names
+    return <HelpCircle {...props} className="h-5 w-5 text-muted-foreground" />;
+  }
+  return <IconComponent {...props} className="h-5 w-5" />;
+};
+
+export default function AdminServicesPage() {
+  const [services, setServices] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch("/api/admin/services");
+        if (!response.ok) {
+          throw new Error('Failed to fetch services');
+        }
+        const data = await response.json();
+        setServices(data);
+      } catch (error) {
+        console.error("Error fetching services:", error);
+        toast({
+          title: "Error",
+          description: "Could not fetch services. " + error.message,
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchServices();
+  }, [toast]);
+
+  const handleDeleteService = async (serviceId, serviceTitle) => {
+    if (!confirm(`Are you sure you want to delete the service "${serviceTitle}"? This action cannot be undone.`)) {
+      return;
+    }
+    try {
+      const response = await fetch(`/api/admin/services/${serviceId}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to delete service');
+      }
+      setServices(prevServices => prevServices.filter(s => s._id !== serviceId));
+      toast({
+        title: "Service Deleted",
+        description: `Service "${serviceTitle}" has been deleted.`,
+      });
+    } catch (error) {
+      console.error("Error deleting service:", error);
+      toast({
+        title: "Delete Failed",
+        description: error.message || "Could not delete the service.",
+        variant: "destructive",
+      });
+    }
+  };
+
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">Manage Team Members</h2>
+          <h2 className="text-3xl font-bold tracking-tight">Manage Services</h2>
           <p className="text-muted-foreground">
-            Add, edit, or remove team member profiles.
+            Add, edit, or remove services offered by your company.
           </p>
         </div>
         <Button asChild>
-          <Link href="/admin/team/new"> {/* This route will need to be created */}
-            <PlusCircle className="mr-2 h-4 w-4" /> Add New Member
+          <Link href="/admin/services/new">
+            <PlusCircle className="mr-2 h-4 w-4" /> Add New Service
           </Link>
         </Button>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Team Members List</CardTitle>
-          <CardDescription>Current team members displayed on the "About Us" page.</CardDescription>
+          <CardTitle>Services List</CardTitle>
+          <CardDescription>A list of all current services.</CardDescription>
         </CardHeader>
         <CardContent>
+          {isLoading ? (
+             <div className="flex items-center justify-center h-24">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <p className="ml-2">Loading services...</p>
+              </div>
+          ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[80px]">Photo</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead className="hidden md:table-cell">Bio (Excerpt)</TableHead>
+                <TableHead className="hidden sm:table-cell w-[60px]">Icon</TableHead>
+                <TableHead>Title</TableHead>
+                <TableHead className="hidden md:table-cell">Description</TableHead>
+                <TableHead className="hidden sm:table-cell">Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {teamMembers.length === 0 && (
+              {services.length === 0 && !isLoading && (
                 <TableRow>
                   <TableCell colSpan={5} className="text-center h-24">
-                    No team members found. <Link href="/admin/team/new" className="text-primary hover:underline">Add one now</Link>.
+                    No services found. <Link href="/admin/services/new" className="text-primary hover:underline">Add one now</Link>.
                   </TableCell>
                 </TableRow>
               )}
-              {teamMembers.map((member) => (
-                <TableRow key={member.id}>
-                  <TableCell>
-                    <Avatar>
-                      <AvatarImage src={member.photoUrl} alt={member.name} data-ai-hint={member['data-ai-hint']}/>
-                      <AvatarFallback>{member.name.substring(0, 2).toUpperCase()}</AvatarFallback>
-                    </Avatar>
+              {services.map((service) => (
+                <TableRow key={service._id}>
+                  <TableCell className="hidden sm:table-cell">
+                    {getIcon(service.iconName)}
                   </TableCell>
-                  <TableCell className="font-medium">{member.name}</TableCell>
-                  <TableCell>{member.role}</TableCell>
-                  <TableCell className="hidden md:table-cell max-w-xs truncate">{member.bio}</TableCell>
+                  <TableCell className="font-medium">{service.title}</TableCell>
+                  <TableCell className="hidden md:table-cell max-w-xs truncate">{service.description}</TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    <Badge variant={service.status === "Active" ? "default" : "secondary"}>
+                      {service.status}
+                    </Badge>
+                  </TableCell>
                   <TableCell className="text-right">
                     <Button variant="ghost" size="icon" asChild className="mr-2">
-                      <Link href={`/admin/team/edit/${member.id}`}> {/* This route will need to be created */}
+                      <Link href={`/admin/services/edit/${service._id}`}>
                         <Edit className="h-4 w-4" />
                         <span className="sr-only">Edit</span>
                       </Link>
                     </Button>
-                    <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => alert(`Delete action for ${member.name} - not implemented.`)}>
-                      {/* Add onClick handler for delete action */}
+                    <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => handleDeleteService(service._id, service.title)}>
                       <Trash2 className="h-4 w-4" />
                       <span className="sr-only">Delete</span>
                     </Button>
@@ -80,16 +152,7 @@ export default function AdminTeamPage() {
               ))}
             </TableBody>
           </Table>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-            <CardTitle className="text-lg">Note:</CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-sm text-muted-foreground">
-            This page uses placeholder data from `src/lib/constants.ts`. Functionality for adding, editing, and deleting team members needs to be connected to backend API routes. The "Add New Member" and "Edit" buttons link to routes that need to be created.
-            </p>
+          )}
         </CardContent>
       </Card>
     </div>

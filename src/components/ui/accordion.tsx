@@ -1,58 +1,39 @@
-"use client"
+// src/components/ui/WhatsappIcon.jsx
+"use client";
 
-import * as React from "react"
-import * as AccordionPrimitive from "@radix-ui/react-accordion"
-import { ChevronDown } from "lucide-react"
+import { MessageCircle } from "lucide-react";
+import { WHATSAPP_LINK_GENERIC } from "@/lib/constants";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
-import { cn } from "@/lib/utils"
-
-const Accordion = AccordionPrimitive.Root
-
-const AccordionItem = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
->(({ className, ...props }, ref) => (
-  <AccordionPrimitive.Item
-    ref={ref}
-    className={cn("border-b", className)}
-    {...props}
-  />
-))
-AccordionItem.displayName = "AccordionItem"
-
-const AccordionTrigger = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex">
-    <AccordionPrimitive.Trigger
-      ref={ref}
-      className={cn(
-        "flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
-        className
-      )}
-      {...props}
+export default function WhatsappIcon() {
+  return (
+    <motion.div
+      // Subtle bounce animation every 3 seconds, y-axis
+      // Animation duration 0.6s for each part of the bounce (up/down)
+      animate={{
+        y: [0, -8, 0, -4, 0], // Keyframes for y-axis movement
+        transition: {
+          duration: 1.2, // Total duration for one full bounce sequence (0.6s up, 0.6s down effectively)
+          repeat: Infinity,
+          repeatDelay: 1.8, // (3s total) - 1.2s animation = 1.8s delay
+          ease: "easeInOut",
+        },
+      }}
+      whileHover={{ scale: 1.1 }} // Scale on hover (duration 0.15s)
+      transition={{ type: "spring", stiffness: 400, damping: 10, duration: 0.15 }}
+      className="fixed bottom-6 right-6 z-50" // Removed h-16 w-16, bg-primary etc. to apply on Link
     >
-      {children}
-      <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
-    </AccordionPrimitive.Trigger>
-  </AccordionPrimitive.Header>
-))
-AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
-
-const AccordionContent = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Content
-    ref={ref}
-    className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-    {...props}
-  >
-    <div className={cn("pb-4 pt-0", className)}>{children}</div>
-  </AccordionPrimitive.Content>
-))
-
-AccordionContent.displayName = AccordionPrimitive.Content.displayName
-
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
+      <Link
+        href={WHATSAPP_LINK_GENERIC}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp"
+        className="h-16 w-16 rounded-full shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center"
+        // Removed animate-bounce as Framer Motion handles it
+      >
+        <MessageCircle className="h-8 w-8" />
+      </Link>
+    </motion.div>
+  );
+}

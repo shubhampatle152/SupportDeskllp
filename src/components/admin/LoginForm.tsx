@@ -1,115 +1,69 @@
-
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { Save } from "lucide-react";
+import React from "react"; // Ensure React is imported for FormEvent
 
-export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasMounted, setHasMounted] = useState(false);
-  const router = useRouter();
-  const { toast } = useToast();
+// In a real app, you'd fetch and manage hero data via state and API calls
+const mockHeroData = {
+  title: "Virtual Assistants for Startups and Enterprises",
+  subtitle: "Elevate your productivity with our expert virtual assistance services. Focus on what you do best, we'll handle the rest.",
+  primaryImage: "https://placehold.co/1200x600.png", // Placeholder
+  secondaryImage: "https://placehold.co/600x400.png", // Placeholder
+};
 
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
+export default function HeroForm() {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      const response = await fetch("/api/admin/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.ok) {
-        toast({ title: "Login Successful", description: "Redirecting to dashboard..." });
-        router.push("/admin/dashboard");
-        router.refresh(); // Important to update middleware-protected routes
-      } else {
-        const errorData = await response.json();
-        toast({
-          title: "Login Failed",
-          description: errorData.message || "Invalid credentials.",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      toast({
-        title: "Login Error",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    alert("Save functionality not implemented yet.");
   };
 
   return (
-    <Card className="w-full max-w-sm">
+    <Card>
       <CardHeader>
-        <CardTitle className="text-2xl">Admin Login</CardTitle>
-        <CardDescription>Enter your credentials to access the admin panel.</CardDescription>
+        <CardTitle>Hero Content</CardTitle>
+        <CardDescription>
+          Set the text and images that appear prominently on your homepage.
+        </CardDescription>
       </CardHeader>
-      {hasMounted ? (
-        <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="admin@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                disabled={isLoading}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                disabled={isLoading}
-                placeholder="********"
-              />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <span>Login</span>}
-            </Button>
-          </CardFooter>
-        </form>
-      ) : (
-        // Optional: Render a placeholder or skeleton while not mounted
+      <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <div className="h-5 w-20 bg-muted rounded-md animate-pulse"></div>
-            <div className="h-10 w-full bg-muted rounded-md animate-pulse"></div>
+            <Label htmlFor="heroTitle">Main Title</Label>
+            <Input id="heroTitle" defaultValue={mockHeroData.title} placeholder="Enter main hero title" />
           </div>
           <div className="space-y-2">
-            <div className="h-5 w-20 bg-muted rounded-md animate-pulse"></div>
-            <div className="h-10 w-full bg-muted rounded-md animate-pulse"></div>
+            <Label htmlFor="heroSubtitle">Subtitle</Label>
+            <Textarea id="heroSubtitle" defaultValue={mockHeroData.subtitle} placeholder="Enter hero subtitle" rows={3} />
           </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+              <Label htmlFor="heroPrimaryImage">Primary Image URL</Label>
+              <Input id="heroPrimaryImage" defaultValue={mockHeroData.primaryImage} placeholder="https://example.com/image.png" />
+              <p className="text-xs text-muted-foreground">Main large image for the hero section.</p>
+              </div>
+              <div className="space-y-2">
+              <Label htmlFor="heroSecondaryImage">Secondary Image URL (Optional)</Label>
+              <Input id="heroSecondaryImage" defaultValue={mockHeroData.secondaryImage} placeholder="https://example.com/small-image.png" />
+               <p className="text-xs text-muted-foreground">A smaller supporting image, if applicable.</p>
+              </div>
+          </div>
+           <div className="space-y-2">
+            <Label>Current Primary Image Preview</Label>
+            <img src={mockHeroData.primaryImage} alt="Primary Hero Preview" data-ai-hint="website hero banner" className="rounded-md border object-cover aspect-[2/1]" />
+          </div>
+
         </CardContent>
-      )}
+        <CardContent className="border-t pt-6">
+          <Button type="submit">
+            <Save className="mr-2 h-4 w-4" /> Save Hero Settings
+          </Button>
+        </CardContent>
+      </form>
     </Card>
   );
 }

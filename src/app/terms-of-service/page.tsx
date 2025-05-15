@@ -1,67 +1,86 @@
-
+// src/app/services/page.jsx
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { COMPANY_NAME } from "@/lib/constants";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import ServiceCard from "@/components/ui/ServiceCard";
+import SchedulingModal from "@/components/ui/SchedulingModal";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { SERVICES_DATA } from "@/lib/constants";
+import { CalendarDays } from "lucide-react";
+import * as LucideIcons from "lucide-react";
+import { motion } from "framer-motion";
 
-export default function TermsOfServicePage() {
-  const [lastUpdated, setLastUpdated] = useState("");
 
-  useEffect(() => {
-    setLastUpdated(new Date().toLocaleDateString());
-  }, []);
+// Container for service cards for staggered animation
+// Stagger children by 0.15s
+const servicesContainerVariants = {
+  hidden: { opacity: 1 }, // Parent doesn't need to fade, only stagger children
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15, // Duration for staggering
+    },
+  },
+};
+
+export default function ServicesPage() {
+  const [isSchedulingModalOpen, setIsSchedulingModalOpen] = useState(false);
 
   return (
-    <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
-      <Card className="max-w-3xl mx-auto bg-card shadow-lg animate-fadeInUp opacity-0">
-        <CardHeader>
-          <CardTitle className="text-3xl font-bold text-primary">Terms of Service</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6 text-muted-foreground">
-          <p>Last updated: {lastUpdated || "Loading..."}</p>
+    <>
+      <section className="py-16 md:py-24 bg-gradient-to-br from-primary/5 via-background to-background">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="text-center mb-12 md:mb-16">
+            {/* Using existing CSS animations for titles for now, can be replaced with Framer Motion */}
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 animate-fadeInUp opacity-0">Our Comprehensive Services</h1>
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto animate-fadeInUp opacity-0 animation-delay-200">
+              We offer a wide range of virtual assistance services designed to streamline your operations, boost productivity, and help your business grow.
+            </p>
+          </div>
 
-          <h2 className="text-xl font-semibold text-foreground">1. Agreement to Terms</h2>
-          <p>By using our services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services. We may update these terms from time to time, and your continued use of our services constitutes acceptance of those changes.</p>
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+            variants={servicesContainerVariants}
+            initial="hidden"
+            animate="visible" // Animate when the component mounts (or whileInView if preferred for the whole grid)
+          >
+            {SERVICES_DATA.map((service) => (
+              // ServiceCard now has its own motion.div, so no need to wrap it here with another one
+              // The staggerChildren in the parent will apply to the motion.div inside ServiceCard
+              <ServiceCard
+                key={service.id}
+                id={service.id}
+                title={service.title}
+                description={service.description}
+                iconName={service.icon}
+              />
+            ))}
+          </motion.div>
+        </div>
+      </section>
 
-          <h2 className="text-xl font-semibold text-foreground">2. Description of Service</h2>
-          <p>{COMPANY_NAME} provides virtual assistant services, including but not limited to administrative support, customer service, technical assistance, and marketing services. The specific services provided will be outlined in a separate agreement or scope of work.</p>
+      {/* Schedule a Call Section - using existing CSS animations */}
+      <section className="py-16 md:py-24 bg-secondary">
+        <div className="container mx-auto px-4 md:px-6">
+           <Card className="max-w-3xl mx-auto shadow-xl bg-card p-6 md:p-10 animate-fadeInUp opacity-0">
+            <CardHeader className="text-center p-0 mb-6">
+              <CardTitle className="text-3xl font-bold text-primary">Ready to Get Started?</CardTitle>
+              <CardDescription className="text-lg text-muted-foreground mt-2">
+                Find out how our tailored virtual assistant solutions can transform your business. Schedule a free consultation today!
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-0 flex justify-center">
+              <Button size="lg" onClick={() => setIsSchedulingModalOpen(true)} className="bg-accent hover:bg-accent/90 text-accent-foreground transition-transform hover:scale-105">
+                Schedule Your Consultation
+                <CalendarDays className="ml-2 h-5 w-5" />
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
 
-          <h2 className="text-xl font-semibold text-foreground">3. User Responsibilities</h2>
-          <p>You are responsible for providing accurate and complete information necessary for us to perform the services. You agree to use our services for lawful purposes only and not to engage in any activity that could harm {COMPANY_NAME}, its employees, or its other clients.</p>
-
-          <h2 className="text-xl font-semibold text-foreground">4. Payment Terms</h2>
-          <p>Fees for our services will be as set out in your service agreement. Payments are due as specified in the invoice. Late payments may incur interest charges or suspension of services.</p>
-
-          <h2 className="text-xl font-semibold text-foreground">5. Confidentiality</h2>
-          <p>We will maintain the confidentiality of your proprietary information. Similarly, you agree to keep confidential any proprietary information of {COMPANY_NAME} that you may be exposed to.</p>
-
-          <h2 className="text-xl font-semibold text-foreground">6. Intellectual Property</h2>
-          <p>Any work product created by {COMPANY_NAME} specifically for you as part of the services will be your property upon full payment. We retain ownership of our pre-existing materials, tools, and methodologies.</p>
-
-          <h2 className="text-xl font-semibold text-foreground">7. Limitation of Liability</h2>
-          <p>{COMPANY_NAME} will not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses, resulting from (a) your access to or use of or inability to access or use the services; (b) any conduct or content of any third party on the services.</p>
-          <p>Our total liability to you for any claim arising out of or relating to these Terms or our services, regardless of the form of the action, is limited to the amount you paid us for the services in the 3 months prior to the event giving rise to the liability.</p>
-          
-          <h2 className="text-xl font-semibold text-foreground">8. Termination</h2>
-          <p>Either party may terminate the service agreement with written notice as specified in the agreement. Upon termination, you will be responsible for payment for all services performed up to the termination date.</p>
-
-          <h2 className="text-xl font-semibold text-foreground">9. Governing Law</h2>
-          <p>These Terms shall be governed by and construed in accordance with the laws of the State of Texas, without regard to its conflict of law principles.</p>
-
-          <h2 className="text-xl font-semibold text-foreground">10. Changes to Terms</h2>
-          <p>We reserve the right to modify these terms at any time. We will provide notice of any significant changes. Your continued use of our services after such changes constitutes your acceptance of the new terms.</p>
-
-          <h2 className="text-xl font-semibold text-foreground">11. Contact Us</h2>
-          <p>If you have any questions about these Terms, please contact us at legal@supportdeskllp.com or by post to:</p>
-          <p>
-            {COMPANY_NAME}<br />
-            Attn: Legal Department<br />
-            123 Innovation Drive<br />
-            Tech City, TX 75001, USA
-          </p>
-        </CardContent>
-      </Card>
-    </div>
+      <SchedulingModal isOpen={isSchedulingModalOpen} onOpenChange={setIsSchedulingModalOpen} />
+    </>
   );
 }
