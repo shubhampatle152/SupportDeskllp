@@ -9,7 +9,7 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { z } from 'zod'; // Corrected import
 
 const GenerateInitialMessageInputSchema = z.object({
   topic: z.string().describe('The topic or reason for contacting support.'),

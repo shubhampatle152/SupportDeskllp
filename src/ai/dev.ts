@@ -1,4 +1,2 @@
-import { config } from 'dotenv';
-config();
-
-import '@/ai/flows/whatsapp-message-assistance.ts';
+// This file has been removed as it was a redundant TypeScript leftover.
+// The JavaScript version used by package.json scripts is at src/ai/dev.js
