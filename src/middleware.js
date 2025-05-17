@@ -5,7 +5,7 @@ const ADMIN_LOGIN_PATH = '/admin/login';
 const ADMIN_DASHBOARD_PATH = '/admin/dashboard';
 const ADMIN_BASE_PATH = '/admin';
 
-export function middleware(request) {
+export const middleware = (request) => {
   const { pathname } = request.nextUrl;
   const sessionToken = request.cookies.get('admin-session-token');
 
@@ -27,7 +27,7 @@ export function middleware(request) {
   }
 
   return NextResponse.next();
-}
+};
 
 export const config = {
   matcher: ['/admin/:path*'], // Apply middleware to all routes under /admin

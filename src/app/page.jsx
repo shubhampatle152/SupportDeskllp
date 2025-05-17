@@ -1,4 +1,4 @@
-// src/app/page.jsx
+
 "use client";
 
 import { useState } from "react";
@@ -43,7 +43,7 @@ const heroButtonVariants = {
   },
 };
 
-export default function HomePage() {
+const HomePage = () => {
   const [isSchedulingModalOpen, setIsSchedulingModalOpen] = useState(false);
 
   return (
@@ -59,23 +59,23 @@ export default function HomePage() {
         >
           <motion.h1
             variants={heroTextItemVariants}
-            className="text-4xl md:text-6xl font-bold text-foreground mb-6" // Removed animate-fadeInUp opacity-0
+            className="text-4xl md:text-6xl font-bold text-foreground mb-6"
           >
             Virtual Assistants for <span className="text-primary">Startups</span> and <span className="text-primary">Enterprises</span>
           </motion.h1>
           <motion.p
             variants={heroTextItemVariants}
-            className="text-lg md:text-xl text-muted-foreground mb-10 max-w-3xl mx-auto" // Removed animate-fadeInUp opacity-0 animation-delay-200
+            className="text-lg md:text-xl text-muted-foreground mb-10 max-w-3xl mx-auto"
           >
             Elevate your productivity with our expert virtual assistance services. Focus on what you do best, we'll handle the rest.
           </motion.p>
           <motion.div
-            variants={heroButtonVariants} // Animate buttons container as a single item after text
-            className="flex flex-col sm:flex-row justify-center gap-4" // Removed animate-fadeInUp opacity-0 animation-delay-400
+            variants={heroButtonVariants}
+            className="flex flex-col sm:flex-row justify-center gap-4"
           >
-            <motion.div // Wrapper for individual button animation
+            <motion.div
               whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300, duration: 0.2 }} // Hover scale duration 0.2s
+              transition={{ type: "spring", stiffness: 300, duration: 0.2 }}
             >
               <Button size="lg" asChild className="bg-primary hover:bg-primary/80 text-primary-foreground">
                 <Link href="/services">
@@ -83,12 +83,12 @@ export default function HomePage() {
                 </Link>
               </Button>
             </motion.div>
-            <motion.div // Wrapper for individual button animation (pulsating CTA)
+            <motion.div 
               animate={{
-                scale: [1, 1.03, 1], // Pulsate scale effect
-                transition: { duration: 1.5, repeat: Infinity, ease: "easeInOut" } // Pulsate duration 1.5s
+                scale: [1, 1.03, 1], 
+                transition: { duration: 1.5, repeat: Infinity, ease: "easeInOut" } 
               }}
-              whileHover={{ scale: 1.05 }} // Hover scale duration 0.2s
+              whileHover={{ scale: 1.05 }} 
               transition={{ type: "spring", stiffness: 300, duration: 0.2 }}
             >
               <Button size="lg" variant="outline" onClick={() => setIsSchedulingModalOpen(true)} className="border-accent text-accent hover:bg-accent/10">
@@ -99,13 +99,10 @@ export default function HomePage() {
         </motion.div>
       </section>
 
-      {/* Featured Logos Carousel */}
-      {/* Original animation classes can be replaced or augmented with Framer Motion if needed */}
       <div className="animate-fadeInUp opacity-0 animation-delay-500">
         <LogoCarousel />
       </div>
       
-      {/* How It Works / Benefits Section - using existing CSS animations for now */}
       <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <h2 className="text-3xl font-bold text-center text-foreground mb-12 animate-fadeInUp opacity-0">Why Choose {COMPANY_NAME}?</h2>
@@ -147,7 +144,6 @@ export default function HomePage() {
         </div>
       </section>
       
-      {/* Schedule a Call Section - using existing CSS animations */}
       <section className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4 md:px-6">
           <Card className="max-w-3xl mx-auto shadow-xl bg-card p-6 md:p-10 animate-fadeInUp opacity-0">
@@ -170,4 +166,6 @@ export default function HomePage() {
       <SchedulingModal isOpen={isSchedulingModalOpen} onOpenChange={setIsSchedulingModalOpen} />
     </>
   );
-}
+};
+
+export default HomePage;

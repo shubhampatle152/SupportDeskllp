@@ -5,7 +5,7 @@ import Service from '@/models/Service';
 
 // IMPORTANT: Add authentication/authorization checks for all admin routes
 
-export async function GET(request) {
+export const GET = async (request) => {
   // TODO: Add authentication check
   try {
     await dbConnect();
@@ -15,9 +15,9 @@ export async function GET(request) {
     console.error("Error fetching services:", error);
     return NextResponse.json({ message: "Error fetching services", details: error.message }, { status: 500 });
   }
-}
+};
 
-export async function POST(request) {
+export const POST = async (request) => {
   // TODO: Add authentication check
   try {
     await dbConnect();
@@ -43,4 +43,4 @@ export async function POST(request) {
     }
     return NextResponse.json({ message: "Error creating service", details: error.message }, { status: 500 });
   }
-}
+};

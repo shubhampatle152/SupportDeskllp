@@ -1,4 +1,4 @@
-// src/ai/flows/whatsapp-message-assistance.js
+
 'use server';
 /**
  * @fileOverview An AI agent to assist users in composing initial WhatsApp messages.
@@ -9,21 +9,22 @@
  */
 
 import {ai} from '@/ai/genkit';
-import { z } from 'zod'; // Corrected import
+import { z } from 'zod'; 
 
 const GenerateInitialMessageInputSchema = z.object({
   topic: z.string().describe('The topic or reason for contacting support.'),
 });
-
+// export type GenerateInitialMessageInput = z.infer<typeof GenerateInitialMessageInputSchema>; // Type export removed for JS
 
 const GenerateInitialMessageOutputSchema = z.object({
   message: z.string().describe('The AI-generated initial message for WhatsApp.'),
 });
+// export type GenerateInitialMessageOutput = z.infer<typeof GenerateInitialMessageOutputSchema>; // Type export removed for JS
 
 
-export async function generateInitialMessage(input) {
+export const generateInitialMessage = async (input) => {
   return generateInitialMessageFlow(input);
-}
+};
 
 const prompt = ai.definePrompt({
   name: 'generateInitialMessagePrompt',
@@ -43,8 +44,12 @@ const generateInitialMessageFlow = ai.defineFlow(
     inputSchema: GenerateInitialMessageInputSchema,
     outputSchema: GenerateInitialMessageOutputSchema,
   },
-  async input => {
+  async (input) => {
     const {output} = await prompt(input);
-    return output;
+    return output; // In Genkit 1.x, output is the direct value, not output()
   }
 );
+
+// Type exports are not standard in JS, so if needed for external JS consumption,
+// they would typically be documented or handled differently (e.g., JSDoc for schema shape).
+// For this conversion, explicit 'type' exports are removed.

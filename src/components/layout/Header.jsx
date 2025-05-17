@@ -1,4 +1,4 @@
-// src/components/layout/Header.jsx
+
 "use client";
 
 import Link from "next/link";
@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import SchedulingModal from "@/components/ui/SchedulingModal";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function Header() {
+const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSchedulingModalOpen, setIsSchedulingModalOpen] = useState(false);
@@ -26,8 +26,6 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Mobile menu variants
-  // Slide in from left, duration 0.4s
   const mobileMenuVariants = {
     hidden: { x: "-100%", opacity: 0, transition: { duration: 0.4, ease: "easeInOut" } },
     visible: { x: "0%", opacity: 1, transition: { duration: 0.4, ease: "easeInOut" } },
@@ -47,7 +45,6 @@ export default function Header() {
             <span>{COMPANY_NAME}</span>
           </Link>
 
-          {/* Desktop Navigation - Rendered only on client after mount */}
           {hasMounted && (
             <nav className="hidden items-center gap-6 md:flex">
               {NAV_LINKS.map((link) => (
@@ -69,7 +66,6 @@ export default function Header() {
             </nav>
           )}
 
-          {/* Mobile Navigation Trigger - Rendered only on client after mount */}
           {hasMounted && (
             <div className="md:hidden">
               <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
@@ -79,20 +75,19 @@ export default function Header() {
                     <span className="sr-only">Open menu</span>
                   </Button>
                 </SheetTrigger>
-                {/* AnimatePresence for mobile menu */}
                 <AnimatePresence>
                   {isMobileMenuOpen && (
                     <SheetContent
-                      side="left" // Changed to left for slide-in from left
-                      className="w-full max-w-xs bg-background p-0" // Removed p-6 to allow motion.div to control padding
-                      asChild // Important for Framer Motion to take over rendering
+                      side="left" 
+                      className="w-full max-w-xs bg-background p-0" 
+                      asChild 
                     >
                       <motion.div
                         variants={mobileMenuVariants}
                         initial="hidden"
                         animate="visible"
-                        exit="hidden" // Slide out to left on close
-                        className="flex flex-col h-full p-6" // Added padding here
+                        exit="hidden" 
+                        className="flex flex-col h-full p-6"
                       >
                         <div className="flex justify-between items-center mb-4">
                           <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary" onClick={() => setIsMobileMenuOpen(false)}>
@@ -139,4 +134,6 @@ export default function Header() {
       {hasMounted && <SchedulingModal isOpen={isSchedulingModalOpen} onOpenChange={setIsSchedulingModalOpen} />}
     </>
   );
-}
+};
+
+export default Header;

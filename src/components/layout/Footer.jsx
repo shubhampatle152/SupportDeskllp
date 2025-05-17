@@ -1,8 +1,9 @@
+
 import Link from "next/link";
 import { Zap, MessageCircle, Twitter, Linkedin, Facebook } from "lucide-react";
 import { COMPANY_NAME, SOCIAL_LINKS, WHATSAPP_LINK_GENERIC } from "@/lib/constants";
 
-export default function Footer() {
+const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -40,4 +41,6 @@ export default function Footer() {
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;

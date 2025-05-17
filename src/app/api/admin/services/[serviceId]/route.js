@@ -9,7 +9,7 @@ import mongoose from 'mongoose';
 // Helper function to validate MongoDB ObjectId
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
-export async function GET(request, { params }) {
+export const GET = async (request, { params }) => {
   // TODO: Add authentication check
   const { serviceId } = params;
 
@@ -28,9 +28,9 @@ export async function GET(request, { params }) {
     console.error(`Error fetching service ${serviceId}:`, error);
     return NextResponse.json({ message: "Error fetching service", details: error.message }, { status: 500 });
   }
-}
+};
 
-export async function PUT(request, { params }) {
+export const PUT = async (request, { params }) => {
   // TODO: Add authentication check
   const { serviceId } = params;
 
@@ -64,9 +64,9 @@ export async function PUT(request, { params }) {
     }
     return NextResponse.json({ message: "Error updating service", details: error.message }, { status: 500 });
   }
-}
+};
 
-export async function DELETE(request, { params }) {
+export const DELETE = async (request, { params }) => {
   // TODO: Add authentication check
   const { serviceId } = params;
 
@@ -86,4 +86,4 @@ export async function DELETE(request, { params }) {
     console.error(`Error deleting service ${serviceId}:`, error);
     return NextResponse.json({ message: "Error deleting service", details: error.message }, { status: 500 });
   }
-}
+};
